@@ -25,7 +25,7 @@ export const reactOp = async (req: Request, res: Response) => {
                 id: `${id}`,
                 artId: artId,
                 artistId: decoded.data.id,
-                type: type ? type : 'Like'
+                type: type ? type : 'like'
             }
         })
         await prisma.art.findUnique({
