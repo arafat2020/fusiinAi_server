@@ -17,6 +17,25 @@ export async function searchPost(req: Request, res: Response) {
                     not: Boolean(nsfw)
                 }
             },
+            select: {
+                id: true,
+                img: true,
+                height: true,
+                width: true,
+                Artist: {
+                    select: {
+                        id: true,
+                        profilePic: true
+                    }
+                },
+                react: {
+                    select: {
+                        id: true,
+                        type: true,
+                        artistId: true
+                    }
+                }
+            },
             take: 20,
             skip: skip ? parseInt(`${skip}`) : 0
         })
