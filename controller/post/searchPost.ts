@@ -6,15 +6,14 @@ const prisma = new PrismaClient()
 export async function searchPost(req: Request, res: Response) {
     try {
         const { term, skip, nsfw } = req.query
-        console.log(term);
         await prisma.$connect()
         const searchReasult = await prisma.art.findMany({
             where: {
                 tag: {
-                    contains: `${term}`
+                    startsWith: `${term}`
                 },
                 nsfw: {
-                    not: Boolean(nsfw)
+                    not: nsfw?true:false
                 }
             },
             select: {
@@ -22,6 +21,7 @@ export async function searchPost(req: Request, res: Response) {
                 img: true,
                 height: true,
                 width: true,
+                tag:true,
                 Artist: {
                     select: {
                         id: true,

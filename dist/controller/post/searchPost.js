@@ -16,15 +16,34 @@ function searchPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { term, skip, nsfw } = req.query;
-            console.log(term);
             yield prisma.$connect();
             const searchReasult = yield prisma.art.findMany({
                 where: {
                     tag: {
-                        contains: `${term}`
+                        startsWith: `${term}`
                     },
                     nsfw: {
-                        not: Boolean(nsfw)
+                        not: nsfw ? true : false
+                    }
+                },
+                select: {
+                    id: true,
+                    img: true,
+                    height: true,
+                    width: true,
+                    tag: true,
+                    Artist: {
+                        select: {
+                            id: true,
+                            profilePic: true
+                        }
+                    },
+                    react: {
+                        select: {
+                            id: true,
+                            type: true,
+                            artistId: true
+                        }
                     }
                 },
                 take: 20,
