@@ -32,7 +32,7 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 id: `${id}`,
                 artId: artId,
                 artistId: decoded.data.id,
-                type: type ? type : 'Like'
+                type: type ? type : 'like'
             }
         });
         yield prisma.art.findUnique({

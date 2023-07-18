@@ -1,26 +1,49 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import path  from "path"
 import bodyParser from 'body-parser';
 import testRouter from './router/testRouter';
 import userRoute from './router/userRoute';
 import cors from 'cors'
 import postRouter from './router/postRouter';
 import reactRouter from './router/reactRouter';
-
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 
 
 dotenv.config();
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Fusion Ai Dev server',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        url: 'https://aipic.onrender.com'
+      },
+      {
+        url: 'http://localhost:5000'
+      },
+    ]
+  },
+  apis: ['./docs/docs*.ts'], // files containing annotations as above
+};
+
+
+const openapiSpecification = swaggerJsdoc(options);
 
 const app: Express = express();
 const port = process.env.PORT;
 
 // -------------------add middlewarwe----------------------------
 
-app.use(express.json({limit:'50mb'}))
+app.use(express.json({ limit: '50mb' }))
 app.use(cors())
-app.use(bodyParser.json({limit: "50mb"}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
+
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 // -------------------add middlewarwe end----------------------------
 // add router
@@ -30,22 +53,10 @@ app.use(postRouter)
 app.use(reactRouter)
 // add router end
 // --------------------------deployment------------------------------
+app.get('/',(req:Request ,res:Response)=>{
+res.send('hello from express')
+})
 
-const dev = true
-
-const __dirname1 = path.resolve();
-
-if (!dev) {
-  app.use(express.static(path.join(__dirname1, "/client/dist")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "client", "dist", "index.html"))
-  );
-} else {
-  app.get('/', (req: Request, res: Response) => {
-    res.send('Express + TypeScript Server');
-  });
-}
 // --------------------------deployment end------------------------------
 
 
