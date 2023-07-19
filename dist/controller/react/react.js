@@ -20,6 +20,7 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.sendStatus(400);
         return;
     }
+    console.time('c');
     const isReacted = yield prisma.react.findMany({
         where: {
             artistId: decoded.data.id,
@@ -57,7 +58,10 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     }
                 }
             }
-        }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+        }).then(data => {
+            console.timeEnd('c');
+            res.send(data);
+        }).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
         return;
     }
     if (isReacted.length !== 0) {
@@ -89,7 +93,10 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         }
                     }
                 }
-            }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+            }).then(data => {
+                console.timeEnd('c');
+                res.send(data);
+            }).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
             return;
         }
         else {
@@ -122,9 +129,13 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         }
                     }
                 }
-            }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+            }).then(data => {
+                console.timeEnd('c');
+                res.send(data);
+            }).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
             return;
         }
     }
+    console.timeEnd('c');
 });
 exports.reactOp = reactOp;

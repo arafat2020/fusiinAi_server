@@ -12,6 +12,8 @@ export const reactOp = async (req: Request, res: Response) => {
         res.sendStatus(400)
         return
     }
+    console.time('c')
+
     const isReacted = await prisma.react.findMany({
         where: {
             artistId: decoded.data.id,
@@ -50,7 +52,10 @@ export const reactOp = async (req: Request, res: Response) => {
                     }
                 }
             }
-        }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+        }).then(data => {
+            console.timeEnd('c')
+
+            res.send(data)}).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
         return
     }
     if (isReacted.length !== 0) {
@@ -82,7 +87,10 @@ export const reactOp = async (req: Request, res: Response) => {
                         }
                     }
                 }
-            }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+            }).then(data => {
+                console.timeEnd('c')
+
+                res.send(data)}).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
             return
         } else {
             await prisma.react.update({
@@ -114,9 +122,13 @@ export const reactOp = async (req: Request, res: Response) => {
                         }
                     }
                 }
-            }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+            }).then(data => {    console.timeEnd('c')
+
+                res.send(data)}).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
             return
         }
     }
+    console.timeEnd('c')
+
 
 }
