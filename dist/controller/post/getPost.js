@@ -13,36 +13,42 @@ exports.getPost = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { skip } = req.query;
     yield prisma.$connect();
-    prisma.art.findMany({
-        where: {
-            hide: {
-                not: true
-            }
-        },
-        select: {
-            id: true,
-            img: true,
-            height: true,
-            width: true,
-            Artist: {
-                select: {
-                    id: true,
-                    profilePic: true
+    prisma.$transaction([
+        prisma.art.findMany({
+            where: {
+                hide: {
+                    not: true
                 }
             },
-            react: {
-                select: {
-                    id: true,
-                    type: true,
-                    artistId: true
+            select: {
+                id: true,
+                img: true,
+                height: true,
+                width: true,
+                Artist: {
+                    select: {
+                        id: true,
+                        profilePic: true
+                    }
+                },
+                react: {
+                    select: {
+                        id: true,
+                        type: true,
+                        artistId: true
+                    }
                 }
-            }
-        },
-        orderBy: {
-            id: 'desc'
-        },
-        take: 20
-    }).then(data => res.send(data)).catch(err => res.status(404).send(err)).finally(() => prisma.$disconnect());
+            },
+            orderBy: {
+                id: 'desc'
+            },
+            take: 20,
+            skip: skip ? parseInt(`${skip}`) : 0
+        }),
+        prisma.art.count()
+    ])
+        .then(data => res.send(data)).catch(err => res.status(404).send(err)).finally(() => prisma.$disconnect());
 });
 exports.getPost = getPost;

@@ -61,7 +61,7 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }).then(data => {
             console.timeEnd('c');
             res.send(data);
-        }).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+        }).catch(err => res.status(400).send(err));
         return;
     }
     if (isReacted.length !== 0) {
@@ -96,7 +96,7 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }).then(data => {
                 console.timeEnd('c');
                 res.send(data);
-            }).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+            }).catch(err => res.status(400).send(err));
             return;
         }
         else {
@@ -132,7 +132,7 @@ const reactOp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }).then(data => {
                 console.timeEnd('c');
                 res.send(data);
-            }).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+            }).catch(err => res.status(400).send(err));
             return;
         }
     }

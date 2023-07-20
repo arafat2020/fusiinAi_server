@@ -55,7 +55,7 @@ export const reactOp = async (req: Request, res: Response) => {
         }).then(data => {
             console.timeEnd('c')
 
-            res.send(data)}).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+            res.send(data)}).catch(err => res.status(400).send(err))
         return
     }
     if (isReacted.length !== 0) {
@@ -90,7 +90,7 @@ export const reactOp = async (req: Request, res: Response) => {
             }).then(data => {
                 console.timeEnd('c')
 
-                res.send(data)}).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+                res.send(data)}).catch(err => res.status(400).send(err))
             return
         } else {
             await prisma.react.update({
@@ -124,7 +124,7 @@ export const reactOp = async (req: Request, res: Response) => {
                 }
             }).then(data => {    console.timeEnd('c')
 
-                res.send(data)}).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+                res.send(data)}).catch(err => res.status(400).send(err))
             return
         }
     }
