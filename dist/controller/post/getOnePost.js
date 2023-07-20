@@ -19,6 +19,6 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         where: {
             id: artId
         }
-    }).then(data => res.send(data)).catch(err => res.status(404).send(err)).finally(() => prisma.$disconnect());
+    }).then(data => res.send(data)).catch(err => res.status(404).send(err));
 });
 exports.getSinglePost = getSinglePost;

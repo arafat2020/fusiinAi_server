@@ -10,6 +10,6 @@ export const getSinglePost = async (req: Request, res: Response) => {
         where:{
             id:artId
         }
-    }).then(data => res.send(data)).catch(err => res.status(404).send(err)).finally(() => prisma.$disconnect())
+    }).then(data => res.send(data)).catch(err => res.status(404).send(err))
 
 }

@@ -38,7 +38,13 @@ export const getPost = async (req: Request, res: Response) => {
             take:20,
             skip:skip?parseInt(`${skip}`):0
         }),
-        prisma.art.count()
+        prisma.art.count({
+            where:{
+                hide:{
+                    not:true
+                }
+            }
+        })
     ])
-    .then(data => res.send(data)).catch(err => res.status(404).send(err)).finally(() => prisma.$disconnect())
+    .then(data => res.send(data)).catch(err => res.status(404).send(err))
 }

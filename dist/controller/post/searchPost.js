@@ -49,7 +49,7 @@ function searchPost(req, res) {
             },
             skip: skip ? parseInt(`${skip}`) : 0,
             take: 20
-        }).then(data => res.send(data)).catch(err => res.status(404).send(err)).finally(() => prisma.$disconnect());
+        }).then(data => res.send(data)).catch(err => res.status(404).send(err));
     });
 }
 exports.searchPost = searchPost;
