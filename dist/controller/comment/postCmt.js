@@ -27,7 +27,18 @@ const postCmt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             artId: artId,
             artistId: decoded.data.id,
             commet: comment
+        }, select: {
+            id: true,
+            commet: true,
+            date: true,
+            Artist: {
+                select: {
+                    id: true,
+                    profilePic: true,
+                    name: true
+                }
+            }
         }
-    }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+    }).then(data => res.send(data)).catch(err => res.status(400).send(err));
 });
 exports.postCmt = postCmt;

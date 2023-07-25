@@ -14,5 +14,5 @@ export const deleteCmt = async (req: Request, res: Response) => {
         where: {
             id: cmtID
         }
-    }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+    }).then(data => res.send(data)).catch(err => res.status(400).send(err))
 }

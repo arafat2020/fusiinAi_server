@@ -23,6 +23,6 @@ const deleteCmt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         where: {
             id: cmtID
         }
-    }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+    }).then(data => res.send(data)).catch(err => res.status(400).send(err));
 });
 exports.deleteCmt = deleteCmt;

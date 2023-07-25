@@ -59,12 +59,13 @@ model React {
 }
 
 model Comment {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
   commet   String
-  Art      Art    @relation(fields: [artId], references: [id])
-  artId    String @db.ObjectId
-  Artist   Artist @relation(fields: [artistId], references: [id])
-  artistId String @db.ObjectId
+  date     DateTime @default(now())
+  Art      Art      @relation(fields: [artId], references: [id])
+  artId    String   @db.ObjectId
+  Artist   Artist   @relation(fields: [artistId], references: [id])
+  artistId String   @db.ObjectId
 }
 
 model Favourite {

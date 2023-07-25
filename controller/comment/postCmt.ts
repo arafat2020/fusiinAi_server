@@ -19,6 +19,17 @@ export const postCmt = async (req: Request, res: Response) => {
             artId:artId,
             artistId:decoded.data.id,
             commet:comment
+        },select:{
+            id:true,
+            commet:true,
+            date:true,
+            Artist:{
+                select:{
+                    id:true,
+                    profilePic:true,
+                    name:true
+                }
+            }
         }
-    }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+    }).then(data => res.send(data)).catch(err => res.status(400).send(err))
 }

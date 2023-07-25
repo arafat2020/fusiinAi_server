@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const postCmt_1 = require("../controller/comment/postCmt");
+const deleteCmt_1 = require("../controller/comment/deleteCmt");
+const updateCmt_1 = require("../controller/comment/updateCmt");
+const isauth_1 = require("../middleware/isauth");
+const cmtRouter = (0, express_1.Router)();
+cmtRouter.route('/postCmt').post(isauth_1.isAuth, postCmt_1.postCmt);
+cmtRouter.route('/deleteCmt').post(isauth_1.isAuth, deleteCmt_1.deleteCmt);
+cmtRouter.route('/updateCmt').post(isauth_1.isAuth, updateCmt_1.updateCmt);
+exports.default = cmtRouter;

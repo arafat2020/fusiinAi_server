@@ -13,12 +13,69 @@ exports.getSinglePost = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { artId } = req.body;
+    const { artId } = req.query;
     yield prisma.$connect();
-    prisma.art.findUnique({
-        where: {
-            id: artId
-        }
-    }).then(data => res.send(data)).catch(err => res.status(404).send(err));
+    prisma.$transaction([
+        prisma.art.findUnique({
+            where: {
+                id: `${artId}`
+            },
+            select: {
+                id: true,
+                img: true,
+                tag: true,
+                Artist: {
+                    select: {
+                        id: true,
+                        profilePic: true
+                    }
+                }
+            }
+        }),
+        prisma.comment.findMany({
+            where: {
+                artId: `${artId}`
+            },
+            select: {
+                id: true,
+                commet: true,
+                date: true,
+                Artist: {
+                    select: {
+                        id: true,
+                        profilePic: true,
+                        name: true
+                    }
+                }
+            },
+            orderBy: {
+                id: 'desc'
+            }
+        }),
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
+                type: 'like'
+            }
+        }),
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
+                type: 'love'
+            }
+        }),
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
+                type: 'dislike'
+            }
+        }),
+        prisma.react.findMany({
+            where: {
+                artId: `${artId}`
+            }
+        })
+    ])
+        .then(data => res.send(data)).catch(err => res.status(404).send(err));
 });
 exports.getSinglePost = getSinglePost;

@@ -24,7 +24,19 @@ const updateCmt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             id: cmtId
         }, data: {
             commet: comment
+        },
+        select: {
+            id: true,
+            commet: true,
+            date: true,
+            Artist: {
+                select: {
+                    id: true,
+                    profilePic: true,
+                    name: true
+                }
+            }
         }
-    }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
+    }).then(data => res.send(data)).catch(err => res.status(400).send(err));
 });
 exports.updateCmt = updateCmt;

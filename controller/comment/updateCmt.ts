@@ -13,9 +13,21 @@ export const updateCmt = async (req: Request, res: Response) => {
     await prisma.$connect()
     prisma.comment.update({
         where: {
-            id:cmtId
+            id: cmtId
         }, data: {
             commet: comment
+        },
+        select: {
+            id: true,
+            commet: true,
+            date: true,
+            Artist: {
+                select: {
+                    id: true,
+                    profilePic: true,
+                    name:true
+                }
+            }
         }
-    }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
+    }).then(data => res.send(data)).catch(err => res.status(400).send(err))
 }

@@ -4,12 +4,70 @@ import { Request, Response } from "express";
 const prisma = new PrismaClient()
 
 export const getSinglePost = async (req: Request, res: Response) => {
-    const { artId } = req.body
+    const { artId } = req.query
     await prisma.$connect()
-    prisma.art.findUnique({
-        where:{
-            id:artId
-        }
-    }).then(data => res.send(data)).catch(err => res.status(404).send(err))
+    prisma.$transaction([
+        prisma.art.findUnique({
+            where: {
+                id: `${artId}`
+            },
+            select: {
+                id: true,
+                img: true,
+                tag: true,
+                Artist: {
+                    select: {
+                        id: true,
+                        profilePic: true
+                    }
+                }
+            }
+        }),
+        prisma.comment.findMany({
+            where: {
+                artId: `${artId}`
+            },
+            select: {
+                id: true,
+                commet: true,
+                date: true,
+                Artist: {
+                    select: {
+                        id: true,
+                        profilePic: true,
+                        name:true
+                    }
+                }
+            },
+            orderBy:{
+                id:'desc'
+            }
+        })
+        ,
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
+                type: 'like'
+            }
+        }),
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
+                type: 'love'
+            }
+        }),
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
+                type: 'dislike'
+            }
+        }),
+        prisma.react.findMany({
+            where: {
+                artId: `${artId}`
+            }
+        })
+    ])
+        .then(data => res.send(data)).catch(err => res.status(404).send(err))
 
 }
