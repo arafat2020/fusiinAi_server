@@ -35,12 +35,12 @@ export const getSinglePost = async (req: Request, res: Response) => {
                     select: {
                         id: true,
                         profilePic: true,
-                        name:true
+                        name: true
                     }
                 }
             },
-            orderBy:{
-                id:'desc'
+            orderBy: {
+                id: 'desc'
             }
         })
         ,
@@ -65,6 +65,16 @@ export const getSinglePost = async (req: Request, res: Response) => {
         prisma.react.findMany({
             where: {
                 artId: `${artId}`
+            }
+        }),
+        prisma.react.findMany({
+            where: {
+                artId: `${artId}`
+            },
+            select: {
+                id: true,
+                type: true,
+                artistId: true
             }
         })
     ])

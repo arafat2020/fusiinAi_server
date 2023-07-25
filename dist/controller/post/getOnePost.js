@@ -74,6 +74,16 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             where: {
                 artId: `${artId}`
             }
+        }),
+        prisma.react.findMany({
+            where: {
+                artId: `${artId}`
+            },
+            select: {
+                id: true,
+                type: true,
+                artistId: true
+            }
         })
     ])
         .then(data => res.send(data)).catch(err => res.status(404).send(err));
