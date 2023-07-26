@@ -66,6 +66,12 @@ function postReact(req, res) {
             prisma.react.count({
                 where: {
                     artId: `${artId}`,
+                    type: 'like'
+                }
+            }),
+            prisma.react.count({
+                where: {
+                    artId: `${artId}`,
                     type: 'love'
                 }
             }),
@@ -75,12 +81,19 @@ function postReact(req, res) {
                     type: 'dislike'
                 }
             }),
-            prisma.react.count({
+            prisma.react.findMany({
                 where: {
                     artId: `${artId}`
+                },
+                select: {
+                    id: true,
+                    type: true,
+                    artistId: true
                 }
             })
-        ]).then(count => res.send(count)).catch(err => res.status(500).send(err));
+        ]).then(count => {
+            res.send(count);
+        }).catch(err => res.status(500).send(err));
     });
 }
 exports.postReact = postReact;

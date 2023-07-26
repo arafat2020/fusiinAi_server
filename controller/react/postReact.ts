@@ -51,6 +51,7 @@ export async function postReact(req: Request, res: Response) {
         maxWait: 10000,
         timeout: 15000
     })
+
     prisma.$transaction([
         prisma.react.count({
             where: {
@@ -69,6 +70,19 @@ export async function postReact(req: Request, res: Response) {
                 artId: `${artId}`,
                 type: 'dislike'
             }
+        }),
+        prisma.react.findMany({
+            where: {
+                artId: `${artId}`
+            },
+            select: {
+                id: true,
+                type: true,
+                artistId: true
+            }
         })
-    ]).then(count=>res.send(count)).catch(err=>res.status(500).send(err))
+    ],).then(count => {
+        res.send(count)
+        
+    }).catch(err => res.status(500).send(err))
 }
