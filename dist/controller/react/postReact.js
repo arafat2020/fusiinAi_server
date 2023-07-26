@@ -75,7 +75,7 @@ function postReact(req, res) {
                     type: 'dislike'
                 }
             }),
-            prisma.react.findMany({
+            prisma.react.count({
                 where: {
                     artId: `${artId}`
                 }

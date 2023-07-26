@@ -64,7 +64,7 @@ export async function postReact(req: Request, res: Response) {
                 type: 'dislike'
             }
         }),
-        prisma.react.findMany({
+        prisma.react.count({
             where: {
                 artId: `${artId}`
             }
