@@ -55,6 +55,12 @@ export async function postReact(req: Request, res: Response) {
         prisma.react.count({
             where: {
                 artId: `${artId}`,
+                type: 'like'
+            }
+        }),
+        prisma.react.count({
+            where: {
+                artId: `${artId}`,
                 type: 'love'
             }
         }),
@@ -62,11 +68,6 @@ export async function postReact(req: Request, res: Response) {
             where: {
                 artId: `${artId}`,
                 type: 'dislike'
-            }
-        }),
-        prisma.react.count({
-            where: {
-                artId: `${artId}`
             }
         })
     ]).then(count=>res.send(count)).catch(err=>res.status(500).send(err))
