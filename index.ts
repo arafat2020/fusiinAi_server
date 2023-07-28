@@ -9,6 +9,7 @@ import reactRouter from './router/reactRouter';
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import cmtRouter from './router/cmtRouter';
+import favouriteRoute from './router/fvRoute';
 
 
 dotenv.config();
@@ -53,6 +54,7 @@ app.use(userRoute)
 app.use(postRouter)
 app.use(reactRouter)
 app.use(cmtRouter)
+app.use(favouriteRoute)
 // add router end
 // --------------------------deployment------------------------------
 app.get('/',(req:Request ,res:Response)=>{

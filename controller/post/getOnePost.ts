@@ -76,6 +76,18 @@ export const getSinglePost = async (req: Request, res: Response) => {
                 type: true,
                 artistId: true
             }
+        }),
+        prisma.favourite.findMany({
+            where: {
+                artId: `${artId}`
+            }, select: {
+                id: true,
+                artistId: true,
+                artId:true,
+            },
+            orderBy:{
+                id:'desc'
+            }
         })
     ])
         .then(data => res.send(data)).catch(err => res.status(404).send(err))

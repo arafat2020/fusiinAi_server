@@ -7,7 +7,7 @@ export const createToken = (id: string, name: string) => {
         data: {
             id, name
         }
-    }, jwt_severt, { expiresIn: '10h' });
+    }, jwt_severt, { expiresIn: '24h' });
 }
 
 export const verifyJwt = (token: string) => {

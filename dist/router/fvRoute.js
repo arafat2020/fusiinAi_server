@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const isauth_1 = require("../middleware/isauth");
+const addToFavotite_1 = require("../controller/Favorite/addToFavotite");
+const deleteFavorite_1 = require("../controller/Favorite/deleteFavorite");
+const favouriteRoute = (0, express_1.Router)();
+favouriteRoute.route('/addToFavorite').post(isauth_1.isAuth, addToFavotite_1.addToFavorte);
+favouriteRoute.route('/deleteFavorite').post(isauth_1.isAuth, deleteFavorite_1.deleteFavorite);
+exports.default = favouriteRoute;

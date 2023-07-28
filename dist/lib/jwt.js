@@ -11,7 +11,7 @@ const createToken = (id, name) => {
         data: {
             id, name
         }
-    }, jwt_severt, { expiresIn: '10h' });
+    }, jwt_severt, { expiresIn: '24h' });
 };
 exports.createToken = createToken;
 const verifyJwt = (token) => {
