@@ -33,7 +33,8 @@ function searchPost(req, res) {
                 Artist: {
                     select: {
                         id: true,
-                        profilePic: true
+                        profilePic: true,
+                        name: true
                     }
                 },
                 react: {
@@ -41,6 +42,21 @@ function searchPost(req, res) {
                         id: true,
                         type: true,
                         artistId: true
+                    }
+                },
+                comment: {
+                    take: 1,
+                    select: {
+                        id: true,
+                        date: true,
+                        commet: true,
+                        Artist: {
+                            select: {
+                                id: true,
+                                profilePic: true,
+                                name: true
+                            }
+                        }
                     }
                 }
             },
