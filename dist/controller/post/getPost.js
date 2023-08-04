@@ -30,7 +30,8 @@ const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 Artist: {
                     select: {
                         id: true,
-                        profilePic: true
+                        profilePic: true,
+                        name: true
                     }
                 },
                 react: {
@@ -38,6 +39,21 @@ const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         id: true,
                         type: true,
                         artistId: true
+                    }
+                },
+                comment: {
+                    take: 1,
+                    select: {
+                        id: true,
+                        date: true,
+                        commet: true,
+                        Artist: {
+                            select: {
+                                id: true,
+                                profilePic: true,
+                                name: true
+                            }
+                        }
                     }
                 }
             },
