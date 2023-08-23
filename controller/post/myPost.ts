@@ -15,6 +15,7 @@ export const myPost = async (req: Request, res: Response) => {
             select:{
                 id:true,
                 img:true,
+                tag:true,
                 width:true,
                 height:true,
                 react:true,

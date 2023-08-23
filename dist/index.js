@@ -15,6 +15,8 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const cmtRouter_1 = __importDefault(require("./router/cmtRouter"));
 const fvRoute_1 = __importDefault(require("./router/fvRoute"));
+const mailRouter_1 = __importDefault(require("./router/mailRouter"));
+const codeRouter_1 = __importDefault(require("./router/codeRouter"));
 dotenv_1.default.config();
 const options = {
     definition: {
@@ -51,6 +53,8 @@ app.use(postRouter_1.default);
 app.use(reactRouter_1.default);
 app.use(cmtRouter_1.default);
 app.use(fvRoute_1.default);
+app.use(mailRouter_1.default);
+app.use(codeRouter_1.default);
 // add router end
 // --------------------------deployment------------------------------
 app.get('/', (req, res) => {

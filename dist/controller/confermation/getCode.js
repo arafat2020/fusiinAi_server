@@ -9,33 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.myPost = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
-const myPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { decoded } = req.body;
+exports.getCode = void 0;
+const redisInstence_1 = require("../../lib/redisInstence");
+const getCode = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { code } = req.body;
     try {
-        yield prisma.$connect();
-        prisma.art.findMany({
-            where: {
-                artistId: `${decoded.data.id}`
-            },
-            select: {
-                id: true,
-                img: true,
-                tag: true,
-                width: true,
-                height: true,
-                react: true,
-            },
-            orderBy: {
-                id: 'desc'
-            }
-        }).then(data => res.send(data)).catch(err => res.status(404).send(err))
-            .finally(() => prisma.$disconnect());
+        const data = yield (0, redisInstence_1.getCode)(code);
+        res.send(data);
     }
     catch (error) {
+        console.log(error);
         res.sendStatus(500);
     }
 });
-exports.myPost = myPost;
+exports.getCode = getCode;

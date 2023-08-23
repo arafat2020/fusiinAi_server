@@ -22,9 +22,19 @@ export const login = async (req: Request, res: Response) => {
         },
 
     }).then(async user => {
+        if (!user) {
+            res.status(404).send({
+                err:true,
+                msg:'User not found'
+            })
+            return
+        }
         const isAuth = await verifyHash(password, `${user?.password}`)
         if (!isAuth) {
-            res.status(401).send('Incorrect Password')
+            res.status(401).send({
+                err:true,
+                msg:'Incorrect PassWord'
+            })
             return
         }
         const token = await createToken(`${user?.id}`, `${user?.name}`)

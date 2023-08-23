@@ -10,10 +10,12 @@ import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import cmtRouter from './router/cmtRouter';
 import favouriteRoute from './router/fvRoute';
+import mailRouter from './router/mailRouter';
+import codeRouter from './router/codeRouter';
 
 
 dotenv.config();
-const options = {
+const options:swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -55,6 +57,8 @@ app.use(postRouter)
 app.use(reactRouter)
 app.use(cmtRouter)
 app.use(favouriteRoute)
+app.use(mailRouter)
+app.use(codeRouter)
 // add router end
 // --------------------------deployment------------------------------
 app.get('/',(req:Request ,res:Response)=>{

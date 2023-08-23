@@ -27,9 +27,19 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email: email
         },
     }).then((user) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!user) {
+            res.status(404).send({
+                err: true,
+                msg: 'User not found'
+            });
+            return;
+        }
         const isAuth = yield (0, hasg_1.verifyHash)(password, `${user === null || user === void 0 ? void 0 : user.password}`);
         if (!isAuth) {
-            res.status(401).send('Incorrect Password');
+            res.status(401).send({
+                err: true,
+                msg: 'Incorrect PassWord'
+            });
             return;
         }
         const token = yield (0, jwt_1.createToken)(`${user === null || user === void 0 ? void 0 : user.id}`, `${user === null || user === void 0 ? void 0 : user.name}`);
