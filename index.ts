@@ -30,6 +30,9 @@ const options:swaggerJsdoc.Options = {
       {
         url: 'http://localhost:5000'
       },
+      {
+        url:'https://fusionai.cyclic.cloud'
+      }
     ]
   },
   apis: ['./docs/docs*.ts'], // files containing annotations as above
