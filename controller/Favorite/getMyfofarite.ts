@@ -17,6 +17,7 @@ export async function getMyFovarite(req: Request, res: Response) {
                 where:{
                     artistId:decoded.data.id
                 },select:{
+                    id:true,
                     artistId:true,
                     Art:{
                         select:{
@@ -37,6 +38,9 @@ export async function getMyFovarite(req: Request, res: Response) {
                             }
                         }
                     }
+                },
+                orderBy:{
+                    id:'desc'
                 }
             })
 

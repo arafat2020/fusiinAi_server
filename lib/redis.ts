@@ -1,7 +1,7 @@
 import { createClient } from 'redis';
 import dotenv from 'dotenv'
 import { EntityId } from 'redis-om';
-import { NotiFicationSChema } from './interface';
+import { NotiFicationSChema } from '../interface/interface';
 
 
 dotenv.config()

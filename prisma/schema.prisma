@@ -23,16 +23,18 @@ model Artist {
   react      React[]
   comment    Comment[]
   Favourite  Favourite[]
+  ArtGroup   ArtGroup[]
 }
 
 model Art {
-  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
   img            String
   tag            String
+  createdAt      DateTime?        @default(now())
   width          Int
   height         Int
-  nsfw           Boolean     @default(false)
-  hide           Boolean     @default(true)
+  nsfw           Boolean          @default(false)
+  hide           Boolean          @default(true)
   prompt         String?
   negetivePrompt String?
   Sampler        String?
@@ -42,11 +44,12 @@ model Art {
   Clip_skip      Int?
   chackPoint     String?
   lora           String?
-  Artist         Artist      @relation(fields: [artistId], references: [id])
-  artistId       String      @db.ObjectId
+  Artist         Artist           @relation(fields: [artistId], references: [id])
+  artistId       String           @db.ObjectId
   react          React[]
   comment        Comment[]
   Favourite      Favourite[]
+  CompressImgRef CompressImgRef[]
 }
 
 model React {
@@ -74,4 +77,21 @@ model Favourite {
   artId    String? @db.ObjectId
   Artist   Artist? @relation(fields: [artistId], references: [id])
   artistId String? @db.ObjectId
+}
+
+model ArtGroup {
+  id         String           @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  imageGroup CompressImgRef[]
+  user       Artist           @relation(fields: [artistId], references: [id])
+  artistId   String           @db.ObjectId
+}
+
+model CompressImgRef {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  ref          Art       @relation(fields: [artId], references: [id])
+  artId        String    @db.ObjectId
+  compress_url String
+  ArtGroup     ArtGroup? @relation(fields: [artGroupId], references: [id])
+  artGroupId   String?   @db.ObjectId
 }

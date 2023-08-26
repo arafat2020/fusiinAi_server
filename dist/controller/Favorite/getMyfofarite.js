@@ -21,6 +21,7 @@ function getMyFovarite(req, res) {
                     where: {
                         artistId: decoded.data.id
                     }, select: {
+                        id: true,
                         artistId: true,
                         Art: {
                             select: {
@@ -41,6 +42,9 @@ function getMyFovarite(req, res) {
                                 }
                             }
                         }
+                    },
+                    orderBy: {
+                        id: 'desc'
                     }
                 });
                 res.send(data);

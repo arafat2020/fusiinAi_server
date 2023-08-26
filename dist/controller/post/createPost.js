@@ -44,7 +44,7 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             nsfw: nsfw ? true : false,
             Seed: Number(Seed),
             Sampler: Sampler,
-            Steps: Number(Steps)
+            Steps: Number(Steps),
         }
     }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
 });

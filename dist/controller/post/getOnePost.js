@@ -24,6 +24,7 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 id: true,
                 img: true,
                 tag: true,
+                createdAt: true,
                 Artist: {
                     select: {
                         id: true,

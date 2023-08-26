@@ -13,7 +13,7 @@ export const uploader = async (url: string|undefined) => {
         return data
 
     } catch (error) {
-        console.log(error);
+        console.log('cld',error);
 
         return null
     }

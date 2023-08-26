@@ -8,28 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploader = void 0;
-const cldUploader_1 = __importDefault(require("./cldUploader"));
-// import imageSize from "image-size"
-const uploader = (url) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!url)
-        return null;
-    try {
-        const Cls = yield cldUploader_1.default.uploader.upload(url);
-        const data = {
-            url: Cls.url,
-            width: Cls.width,
-            height: Cls.height
-        };
-        return data;
-    }
-    catch (error) {
-        console.log('cld', error);
-        return null;
-    }
-});
-exports.uploader = uploader;
+exports.compressImgeUrl = void 0;
+const sharp_1 = require("../../lib/sharp");
+function compressImgeUrl(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { url } = req.body;
+        if (url) {
+            const data = yield (0, sharp_1.CompressImagUrl)(url);
+            res.send(data);
+        }
+        else {
+            res.status(400).send('bad requist');
+        }
+    });
+}
+exports.compressImgeUrl = compressImgeUrl;

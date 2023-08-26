@@ -19,6 +19,7 @@ export const myPost = async (req: Request, res: Response) => {
                 width:true,
                 height:true,
                 react:true,
+                createdAt:true
             },
             orderBy:{
                 id:'desc'

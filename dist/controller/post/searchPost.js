@@ -30,6 +30,7 @@ function searchPost(req, res) {
                 img: true,
                 height: true,
                 width: true,
+                createdAt: true,
                 Artist: {
                     select: {
                         id: true,

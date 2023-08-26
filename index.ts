@@ -12,6 +12,7 @@ import cmtRouter from './router/cmtRouter';
 import favouriteRoute from './router/fvRoute';
 import mailRouter from './router/mailRouter';
 import codeRouter from './router/codeRouter';
+import artGroupRouter from './router/artagroupRoouter';
 
 
 dotenv.config();
@@ -59,6 +60,7 @@ app.use(cmtRouter)
 app.use(favouriteRoute)
 app.use(mailRouter)
 app.use(codeRouter)
+app.use(artGroupRouter)
 // add router end
 // --------------------------deployment------------------------------
 app.get('/',(req:Request ,res:Response)=>{

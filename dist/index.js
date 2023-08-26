@@ -17,6 +17,7 @@ const cmtRouter_1 = __importDefault(require("./router/cmtRouter"));
 const fvRoute_1 = __importDefault(require("./router/fvRoute"));
 const mailRouter_1 = __importDefault(require("./router/mailRouter"));
 const codeRouter_1 = __importDefault(require("./router/codeRouter"));
+const artagroupRoouter_1 = __importDefault(require("./router/artagroupRoouter"));
 dotenv_1.default.config();
 const options = {
     definition: {
@@ -55,6 +56,7 @@ app.use(cmtRouter_1.default);
 app.use(fvRoute_1.default);
 app.use(mailRouter_1.default);
 app.use(codeRouter_1.default);
+app.use(artagroupRoouter_1.default);
 // add router end
 // --------------------------deployment------------------------------
 app.get('/', (req, res) => {

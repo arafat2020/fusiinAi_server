@@ -14,4 +14,5 @@ userRoute.route('/veryfy').post(veryfyAuth)
 userRoute.route('/login').post(login)
 userRoute.route('/getPopulerUser').get(getPopularUser)
 
+
 export default userRoute

@@ -15,6 +15,7 @@ export const getSinglePost = async (req: Request, res: Response) => {
                 id: true,
                 img: true,
                 tag: true,
+                createdAt:true,
                 Artist: {
                     select: {
                         id: true,

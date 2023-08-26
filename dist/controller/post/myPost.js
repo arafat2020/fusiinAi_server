@@ -27,6 +27,7 @@ const myPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 width: true,
                 height: true,
                 react: true,
+                createdAt: true
             },
             orderBy: {
                 id: 'desc'
