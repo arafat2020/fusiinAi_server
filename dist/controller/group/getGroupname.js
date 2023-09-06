@@ -9,25 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createGorupo = void 0;
+exports.getGroupName = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-function createGorupo(req, res) {
+function getGroupName(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { decoded, name } = yield req.body;
+        const { decoded, artID } = yield req.body;
+        console.log(decoded);
         try {
             yield prisma.$connect();
-            const newGroup = yield prisma.artGroup.create({
-                data: {
-                    name: name,
+            const groupNames = yield prisma.artGroup.findMany({
+                where: {
                     artistId: decoded.data.id
                 },
                 select: {
                     id: true,
                     name: true,
+                    Group: {
+                        where: {
+                            artId: artID
+                        }, select: {
+                            id: true,
+                            artId: true
+                        }
+                    }
+                },
+                orderBy: {
+                    id: 'desc'
                 }
             });
-            res.send(newGroup);
+            res.send(groupNames);
         }
         catch (error) {
             console.log(error);
@@ -35,4 +46,4 @@ function createGorupo(req, res) {
         }
     });
 }
-exports.createGorupo = createGorupo;
+exports.getGroupName = getGroupName;

@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import { uploader } from "../../lib/uploadManeger";
+import { CompressImagUrl } from "../../lib/sharp";
 
 const prisma = new PrismaClient()
 
@@ -28,6 +29,9 @@ export const createPost = async (req: Request, res: Response) => {
         return
     }
     const imgObj = await uploader(img)
+    const cmp = await CompressImagUrl(img)
+    if (cmp.isSucsess === false || imgObj?.url === null)  return res.sendStatus(500)
+
     await prisma.$connect()
     prisma.art.create({
         data: {
@@ -48,6 +52,7 @@ export const createPost = async (req: Request, res: Response) => {
             Seed: Number(Seed),
             Sampler: Sampler,
             Steps: Number(Steps),
+            cmp:cmp.url
         }
     }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect())
 }

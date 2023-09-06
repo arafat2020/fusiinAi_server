@@ -9,25 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createGorupo = void 0;
+exports.deleteGRoup = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-function createGorupo(req, res) {
+function deleteGRoup(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { decoded, name } = yield req.body;
+        const { id } = yield req.body;
+        if (!id) {
+            res.sendStatus(400);
+            return;
+        }
         try {
             yield prisma.$connect();
-            const newGroup = yield prisma.artGroup.create({
-                data: {
-                    name: name,
-                    artistId: decoded.data.id
-                },
-                select: {
-                    id: true,
-                    name: true,
+            const dl = yield prisma.artGroup.delete({
+                where: {
+                    id: id,
                 }
             });
-            res.send(newGroup);
+            res.send(dl);
         }
         catch (error) {
             console.log(error);
@@ -35,4 +34,4 @@ function createGorupo(req, res) {
         }
     });
 }
-exports.createGorupo = createGorupo;
+exports.deleteGRoup = deleteGRoup;

@@ -21,7 +21,7 @@ function CompressImagUrl(url) {
         try {
             const imgBuffer = yield axios_1.default.get(url, { responseType: 'arraybuffer' });
             const imageBuffer = yield Buffer.from(imgBuffer.data, 'binary');
-            const data = yield (0, sharp_1.default)(imageBuffer).png({ quality: 30 }).toBuffer();
+            const data = yield (0, sharp_1.default)(imageBuffer).png({ quality: 20 }).toBuffer();
             const base64String = yield data.toString('base64');
             const cld = yield (0, uploadManeger_1.uploader)(`data:image/png;base64,${base64String}`);
             if (cld === null || cld === void 0 ? void 0 : cld.url) {

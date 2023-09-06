@@ -11,13 +11,15 @@ export const deletPoat = async (req: Request, res: Response) => {
         res.sendStatus(400)
         return
     }
+    console.log(id,img);
+    
     await cld.uploader.destroy(img, () => console.log("destroyed")).catch(err => console.log(err)
     )
     await prisma.$connect()
     prisma.art.delete({
         where: {
             id: id
-        }
+        },
     }).then(async () => {
         const nData = await prisma.art.findMany({
             where: {
@@ -33,5 +35,9 @@ export const deletPoat = async (req: Request, res: Response) => {
         })
         res.send(nData)
     }
-    ).catch(err => res.status(400).send(err))
+    ).catch(err => {
+        console.log(err);
+        
+        res.status(400).send(err)
+    })
 }

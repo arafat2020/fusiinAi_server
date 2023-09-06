@@ -12,7 +12,7 @@ export async function CompressImagUrl(url: string): Promise<ImgUrl> {
         const imgBuffer = await axios.get(url, { responseType: 'arraybuffer' })
         const imageBuffer = await Buffer.from(imgBuffer.data, 'binary');
 
-        const data = await sharp(imageBuffer).png({ quality: 30 }).toBuffer()
+        const data = await sharp(imageBuffer).png({ quality: 20 }).toBuffer()
         const base64String = await data.toString('base64')
         const cld = await uploader(`data:image/png;base64,${base64String}`)
         if (cld?.url) {

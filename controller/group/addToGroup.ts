@@ -1,78 +1,73 @@
 import { Request, Response } from "express";
 import { AddtoGroupCredentila } from "../../interface";
-import { CompressImgRef, PrismaClient } from "@prisma/client";
-import { CompressImagUrl } from "../../lib/sharp";
+import { PrismaClient } from "@prisma/client";
+import { ObjectId } from "bson";
 
 const prisma = new PrismaClient()
 
 export async function addToGroup(req: Request, res: Response) {
-    const dto = req.body as AddtoGroupCredentila
-    let cmpUrl: string
-    await prisma.$connect()
+    const { artGroupID, artID,imgUrl,uuid } = req.body as AddtoGroupCredentila
+    if (!artGroupID
+        || !artID
+        || !imgUrl
+        || !uuid
+    ) {
+        res.sendStatus(400)
+        return
+    }
     try {
-        const data = prisma.$transaction(async prisma => {
-            const isCompressImgRefExist = await prisma.compressImgRef.findMany({
+        await prisma.$connect()
+  
+            const isExist = await prisma.group.findMany({
                 where: {
-                    artId: dto.artID
+                    artId: artID,
+                    artGroupId: artGroupID
                 }
             })
-            if (isCompressImgRefExist.length > 0) {
-                cmpUrl = isCompressImgRefExist[0].compress_url
-            } else {
-                const cmp = await CompressImagUrl(dto.imgUrl)
-                if (cmp.isSucsess === false) {
-                    res.sendStatus(500)
-                    return
-                }
-                cmpUrl = cmp.url
-            }
-            await prisma.compressImgRef.create({
-                data: {
-                    artGroupId: dto.artGroupID,
-                    compress_url: cmpUrl,
-                    artId: dto.artID
-                }
-            })
-
-            const group = await prisma.artGroup.findUnique({
-                where: {
-                    id: dto.artGroupID
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            profilePic: true
+            if (isExist.length > 0) {
+                if (isExist.length>1) {
+                    await prisma.group.delete({
+                        where:{
+                            id:isExist[0].id
                         }
-                    },
-                    imageGroup: {
-                        select: {
-                            id: true,
-                            compress_url: true,
-                            ref: {
-                                select: {
-                                    id: true,
-                                    Artist: {
-                                        select: {
-                                            id: true,
-                                            name: true,
-                                            profilePic: true,
-                                        }
+                    })
+                }
+                res.status(400).send({ msg: "Already added" })
+                return
+            }
+            else {
+                const id = new ObjectId()
+                const artGroup = await prisma.group.create({
+                    data:{
+                        id:`${id}`,
+                        artId:artID,
+                        artGroupId:artGroupID,
+                        uuid:uuid
+                    },select:{
+                        ArtGroup:{
+                            select:{
+                                id:true,
+                                name:true,
+                                Group:{
+                                    where:{
+                                        id:`${id}`
+                                    },select:{
+                                        id:true,
+                                        artId:true
                                     }
                                 }
                             }
                         }
                     }
-                }
-            })
-            return group
-        })
-        res.send(data)
+                    
+                })
+                res.send(artGroup)
+
+            }
+       
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
     }
+
 }

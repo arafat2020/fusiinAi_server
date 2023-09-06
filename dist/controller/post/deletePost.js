@@ -22,12 +22,13 @@ const deletPoat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.sendStatus(400);
         return;
     }
+    console.log(id, img);
     yield cldUploader_1.default.uploader.destroy(img, () => console.log("destroyed")).catch(err => console.log(err));
     yield prisma.$connect();
     prisma.art.delete({
         where: {
             id: id
-        }
+        },
     }).then(() => __awaiter(void 0, void 0, void 0, function* () {
         const nData = yield prisma.art.findMany({
             where: {
@@ -42,6 +43,9 @@ const deletPoat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         });
         res.send(nData);
-    })).catch(err => res.status(400).send(err));
+    })).catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    });
 });
 exports.deletPoat = deletPoat;

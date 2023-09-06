@@ -13,6 +13,7 @@ exports.createPost = void 0;
 const client_1 = require("@prisma/client");
 const bson_1 = require("bson");
 const uploadManeger_1 = require("../../lib/uploadManeger");
+const sharp_1 = require("../../lib/sharp");
 const prisma = new client_1.PrismaClient();
 const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = new bson_1.ObjectId();
@@ -25,6 +26,9 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return;
     }
     const imgObj = yield (0, uploadManeger_1.uploader)(img);
+    const cmp = yield (0, sharp_1.CompressImagUrl)(img);
+    if (cmp.isSucsess === false || (imgObj === null || imgObj === void 0 ? void 0 : imgObj.url) === null)
+        return res.sendStatus(500);
     yield prisma.$connect();
     prisma.art.create({
         data: {
@@ -45,6 +49,7 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             Seed: Number(Seed),
             Sampler: Sampler,
             Steps: Number(Steps),
+            cmp: cmp.url
         }
     }).then(data => res.send(data)).catch(err => res.status(400).send(err)).finally(() => prisma.$disconnect());
 });

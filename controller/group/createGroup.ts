@@ -4,24 +4,18 @@ import { GroupArtcredential } from "../../interface";
 
 const prisma = new PrismaClient()
 export async function createGorupo(req: Request, res: Response) {
-    const { decoded, name } = req.body as GroupArtcredential
-    await prisma.$connect()
+    const { decoded, name } = await req.body as GroupArtcredential
     try {
+        await prisma.$connect()
         const newGroup = await prisma.artGroup.create({
             data: {
                 name: name,
                 artistId: decoded.data.id
             },
             select: {
-                user: {
-                    select: {
-                        id: true,
-                        name: true,
-                        profilePic: true
-                    }
-                },
+                id:true,
                 name: true,
-                imageGroup: true
+                
             }
         })
         res.send(newGroup)

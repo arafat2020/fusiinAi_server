@@ -4,7 +4,6 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
-  binaryTargets = "rhel-openssl-1.0.x"
 }
 
 datasource db {
@@ -28,14 +27,14 @@ model Artist {
 }
 
 model Art {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
   img            String
   tag            String
-  createdAt      DateTime?        @default(now())
+  createdAt      DateTime?     @default(now())
   width          Int
   height         Int
-  nsfw           Boolean          @default(false)
-  hide           Boolean          @default(true)
+  nsfw           Boolean       @default(false)
+  hide           Boolean       @default(true)
   prompt         String?
   negetivePrompt String?
   Sampler        String?
@@ -45,20 +44,21 @@ model Art {
   Clip_skip      Int?
   chackPoint     String?
   lora           String?
-  Artist         Artist           @relation(fields: [artistId], references: [id])
-  artistId       String           @db.ObjectId
+  Artist         Artist        @relation(fields: [artistId], references: [id])
+  artistId       String        @db.ObjectId
   react          React[]
   comment        Comment[]
   Favourite      Favourite[]
-  CompressImgRef CompressImgRef[]
+  group          Group[]
+  cmp            String?
 }
 
 model React {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   type     String @default("Like")
-  Artist   Artist @relation(fields: [artistId], references: [id])
+  Artist   Artist? @relation(fields: [artistId], references: [id])
   artistId String @db.ObjectId
-  Art      Art    @relation(fields: [artId], references: [id])
+  Art      Art?   @relation(fields: [artId], references: [id])
   artId    String @db.ObjectId
 }
 
@@ -66,9 +66,9 @@ model Comment {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   commet   String
   date     DateTime @default(now())
-  Art      Art      @relation(fields: [artId], references: [id])
+  Art      Art?      @relation(fields: [artId], references: [id])
   artId    String   @db.ObjectId
-  Artist   Artist   @relation(fields: [artistId], references: [id])
+  Artist   Artist?   @relation(fields: [artistId], references: [id])
   artistId String   @db.ObjectId
 }
 
@@ -81,18 +81,23 @@ model Favourite {
 }
 
 model ArtGroup {
-  id         String           @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  imageGroup CompressImgRef[]
-  user       Artist           @relation(fields: [artistId], references: [id])
-  artistId   String           @db.ObjectId
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  Artist    Artist? @relation(fields: [artistId], references: [id])
+  artistId  String? @db.ObjectId
+  Group     Group[]
+  published Boolean @default(false)
 }
 
-model CompressImgRef {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  ref          Art       @relation(fields: [artId], references: [id])
-  artId        String    @db.ObjectId
-  compress_url String
-  ArtGroup     ArtGroup? @relation(fields: [artGroupId], references: [id])
-  artGroupId   String?   @db.ObjectId
+model Group {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  ArtGroup   ArtGroup @relation(fields: [artGroupId], references: [id])
+  artGroupId String   @db.ObjectId
+  uuid       String
+  Art        Art?     @relation(fields: [artId], references: [id])
+  artId      String?  @db.ObjectId
+
+  @@unique([uuid])
 }
+
+

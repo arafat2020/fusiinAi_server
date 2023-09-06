@@ -12,35 +12,7 @@ export async function getGroup(req: Request, res: Response){
             where:{
                 id:dto.artGroupID
             },
-            select:{
-                id:true,
-                name:true,
-                user:{
-                    select:{
-                        id:true,
-                        name:true,
-                        profilePic:true
-                    }
-                },
-                imageGroup:{
-                    select:{
-                        id:true,
-                        compress_url:true,
-                        ref:{
-                            select:{
-                                id:true,
-                                Artist:{
-                                    select:{
-                                        id:true,
-                                        name:true,
-                                        profilePic:true,
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            
         })
         res.send(group)
     } catch (error) {

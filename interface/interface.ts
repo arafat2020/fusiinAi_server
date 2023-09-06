@@ -13,7 +13,7 @@ export interface NotiFicationSChema {
         msg: string
     }
 }
-type Decoded = {
+export type Decoded = {
     data: {
         id: string,
         name: string
@@ -29,7 +29,8 @@ export interface AddtoGroupCredentila {
     decoded: Decoded,
     artID: string,
     imgUrl: string,
-    artGroupID:string
+    artGroupID:string,
+    uuid:string
 }
 
 export interface GetGroupCredential {

@@ -11,75 +11,64 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addToGroup = void 0;
 const client_1 = require("@prisma/client");
-const sharp_1 = require("../../lib/sharp");
+const bson_1 = require("bson");
 const prisma = new client_1.PrismaClient();
 function addToGroup(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const dto = req.body;
-        let cmpUrl;
-        yield prisma.$connect();
+        const { artGroupID, artID, imgUrl, uuid } = req.body;
+        if (!artGroupID
+            || !artID
+            || !imgUrl
+            || !uuid) {
+            res.sendStatus(400);
+            return;
+        }
         try {
-            const data = prisma.$transaction((prisma) => __awaiter(this, void 0, void 0, function* () {
-                const isCompressImgRefExist = yield prisma.compressImgRef.findMany({
-                    where: {
-                        artId: dto.artID
-                    }
-                });
-                if (isCompressImgRefExist.length > 0) {
-                    cmpUrl = isCompressImgRefExist[0].compress_url;
+            yield prisma.$connect();
+            const isExist = yield prisma.group.findMany({
+                where: {
+                    artId: artID,
+                    artGroupId: artGroupID
                 }
-                else {
-                    const cmp = yield (0, sharp_1.CompressImagUrl)(dto.imgUrl);
-                    if (cmp.isSucsess === false) {
-                        res.sendStatus(500);
-                        return;
-                    }
-                    cmpUrl = cmp.url;
+            });
+            if (isExist.length > 0) {
+                if (isExist.length > 1) {
+                    yield prisma.group.delete({
+                        where: {
+                            id: isExist[0].id
+                        }
+                    });
                 }
-                yield prisma.compressImgRef.create({
+                res.status(400).send({ msg: "Already added" });
+                return;
+            }
+            else {
+                const id = new bson_1.ObjectId();
+                const artGroup = yield prisma.group.create({
                     data: {
-                        artGroupId: dto.artGroupID,
-                        compress_url: cmpUrl,
-                        artId: dto.artID
-                    }
-                });
-                const group = yield prisma.artGroup.findUnique({
-                    where: {
-                        id: dto.artGroupID
-                    },
-                    select: {
-                        id: true,
-                        name: true,
-                        user: {
+                        id: `${id}`,
+                        artId: artID,
+                        artGroupId: artGroupID,
+                        uuid: uuid
+                    }, select: {
+                        ArtGroup: {
                             select: {
                                 id: true,
                                 name: true,
-                                profilePic: true
-                            }
-                        },
-                        imageGroup: {
-                            select: {
-                                id: true,
-                                compress_url: true,
-                                ref: {
-                                    select: {
+                                Group: {
+                                    where: {
+                                        id: `${id}`
+                                    }, select: {
                                         id: true,
-                                        Artist: {
-                                            select: {
-                                                id: true,
-                                                name: true,
-                                                profilePic: true,
-                                            }
-                                        }
+                                        artId: true
                                     }
                                 }
                             }
                         }
                     }
                 });
-                return group;
-            }));
-            res.send(data);
+                res.send(artGroup);
+            }
         }
         catch (error) {
             console.log(error);
