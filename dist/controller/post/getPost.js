@@ -28,6 +28,7 @@ const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 height: true,
                 width: true,
                 createdAt: true,
+                cmp: true,
                 Artist: {
                     select: {
                         id: true,

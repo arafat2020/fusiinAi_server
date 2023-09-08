@@ -19,6 +19,7 @@ export const getPost = async (req: Request, res: Response) => {
                 height: true,
                 width: true,
                 createdAt:true,
+                cmp:true,
                 Artist: {
                     select: {
                         id: true,

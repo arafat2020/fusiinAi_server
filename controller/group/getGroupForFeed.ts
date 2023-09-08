@@ -8,7 +8,7 @@ export async function getGroupForFedd(req: Request, res: Response){
             where:{
                 published:true
             },
-            take:3,
+            take:9,
             orderBy:{
                 Group:{
                     _count:"asc"
