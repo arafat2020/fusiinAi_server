@@ -13,6 +13,7 @@ import favouriteRoute from './router/fvRoute';
 import mailRouter from './router/mailRouter';
 import codeRouter from './router/codeRouter';
 import artGroupRouter from './router/artagroupRoouter';
+import { getPost } from './controller/post/getPost';
 
 
 dotenv.config();
@@ -65,6 +66,9 @@ app.use(mailRouter)
 app.use(codeRouter)
 app.use(artGroupRouter)
 // add router end
+// alternate route start
+app.get("/a/getPost",getPost)
+// alternate route end
 // --------------------------deployment------------------------------
 app.get('/',(req:Request ,res:Response)=>{
 res.send('hello from express')
@@ -76,3 +80,5 @@ res.send('hello from express')
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+
+export default app

@@ -20,7 +20,7 @@ function getGroupForFedd(req, res) {
                 where: {
                     published: true
                 },
-                take: 3,
+                take: 9,
                 orderBy: {
                     Group: {
                         _count: "asc"

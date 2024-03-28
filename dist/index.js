@@ -18,6 +18,7 @@ const fvRoute_1 = __importDefault(require("./router/fvRoute"));
 const mailRouter_1 = __importDefault(require("./router/mailRouter"));
 const codeRouter_1 = __importDefault(require("./router/codeRouter"));
 const artagroupRoouter_1 = __importDefault(require("./router/artagroupRoouter"));
+const getPost_1 = require("./controller/post/getPost");
 dotenv_1.default.config();
 const options = {
     definition: {
@@ -61,6 +62,9 @@ app.use(mailRouter_1.default);
 app.use(codeRouter_1.default);
 app.use(artagroupRoouter_1.default);
 // add router end
+// alternate route start
+app.get("/a/getPost", getPost_1.getPost);
+// alternate route end
 // --------------------------deployment------------------------------
 app.get('/', (req, res) => {
     res.send('hello from express');
@@ -69,3 +73,4 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+exports.default = app;
